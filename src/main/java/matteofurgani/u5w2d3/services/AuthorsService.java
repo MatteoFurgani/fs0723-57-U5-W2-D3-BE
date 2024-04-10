@@ -9,12 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
 
 @Service
 public class AuthorsService {
@@ -25,7 +21,7 @@ public class AuthorsService {
     public Author save(Author author) {
         this.authorDAO.findByEmail(author.getEmail()).ifPresent(
                 author1 -> {
-                    throw new BadRequestException("L'email " + author1.getEmail() + "è gia presente");
+                    throw new BadRequestException("L'email " + author1.getEmail() + " è gia presente");
                 }
         );
 
@@ -33,9 +29,9 @@ public class AuthorsService {
         return this.authorDAO.save(author);
     }
 
-    public Page<Author> getAuthors(int page,int size) {
+    public Page<Author> getAuthors(int page, int size, String sortBy) {
         if(size > 100) size = 100;
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return this.authorDAO.findAll(pageable);
     }
 

@@ -1,4 +1,4 @@
-package matteofurgani.u5w2d3.payloads;
+package matteofurgani.u5w2d3.exceptions;
 
 import lombok.*;
 

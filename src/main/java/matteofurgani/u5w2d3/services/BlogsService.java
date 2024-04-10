@@ -1,9 +1,11 @@
 package matteofurgani.u5w2d3.services;
 
 
+import matteofurgani.u5w2d3.entities.Author;
 import matteofurgani.u5w2d3.entities.Blogpost;
 import matteofurgani.u5w2d3.exceptions.BadRequestException;
 import matteofurgani.u5w2d3.exceptions.NotFoundException;
+import matteofurgani.u5w2d3.payloads.BlogPostPayload;
 import matteofurgani.u5w2d3.repositories.BlogPostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,23 +25,21 @@ public class BlogsService {
     @Autowired
     private BlogPostDAO blogDAO;
 
+    @Autowired
+    private AuthorsService authorsService;
+
     //private final List<Blogpost> blogs = new ArrayList<>();
 
-    public Blogpost save(Blogpost blogpost) {
-        this.blogDAO.findByTitle(blogpost.getTitle()).ifPresent(
-                blog ->{
-                    throw new BadRequestException("Il titolo " + blog.getTitle() + " è gia presente");
-                }
-        );
-
-        blogpost.setCover("https://picsum.photos/200/300");
-        return blogDAO.save(blogpost);
-
-       /* Random rndm = new Random();
-        blogpost.setId(rndm.nextInt());
-        blogpost.setCover("https://picsum.photos/200/300");
-        this.blogs.add(blogpost);
-        return blogpost;*/
+    public Blogpost save(BlogPostPayload body) {
+        Author author = authorsService.findById(body.getAuthorId());
+        Blogpost newBlogPost = new Blogpost();
+        newBlogPost.setReadingTime((int) body.getReadingTime());
+        newBlogPost.setContent(body.getContent());
+        newBlogPost.setTitle(body.getTitle());
+        newBlogPost.setAuthor(author);
+        newBlogPost.setCategory(body.getCategory());
+        newBlogPost.setCover("http://picsum.photos/200/300");
+        return blogDAO.save(newBlogPost);
     }
 
     public Page<Blogpost> getBlogs( int page, int size, String sort) {
@@ -80,21 +80,12 @@ public class BlogsService {
         found.setCategory(modifierBlog.getCategory());
         found.setContent(modifierBlog.getContent());
         found.setCover(modifierBlog.getCover());
+        found.setTitle(modifierBlog.getTitle());
         return this.blogDAO.save(found);
-
-        /*for (Blogpost currentBlog : blogs) {
-            if (currentBlog.getId() == id) {
-                found = currentBlog;
-                found.setCover(body.getCover());
-                found.setCategory(body.getCategory());
-                found.setContent(body.getCover());
-                found.setReadingTime(body.getReadingTime());
-                found.setId(id);
-            }
-        }
-        if (found == null)
-            throw new NotFoundException(id);
-        return found;*/
-
     }
+
+   public List<Blogpost> findBlogsByAuthor(int authorId) {
+       Author author = authorsService.findById(authorId);
+       return blogDAO.findByAuthor(author);
+   }
 }

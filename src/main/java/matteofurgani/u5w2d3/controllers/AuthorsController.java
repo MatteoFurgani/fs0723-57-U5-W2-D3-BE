@@ -26,13 +26,16 @@ public class AuthorsController {
 
     // 2. - GET http://localhost:3001/authors
     @GetMapping
-    public Page<Author> getAuthors(@RequestParam(defaultValue = "1") int page,@RequestParam(defaultValue = "5") int size) {
-        return this.authorsService.getAuthors(page,size);
+    public Page<Author> getAllAuthors(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "id") String sortBy) {
+        return this.authorsService.getAuthors(page,size, sortBy);
     }
 
     // 3. - GET http://localhost:3001/authors/{id}
     @GetMapping("/{authorId}")
     public Author findById(@PathVariable int authorId){
+
         return authorsService.findById(authorId);
     }
 

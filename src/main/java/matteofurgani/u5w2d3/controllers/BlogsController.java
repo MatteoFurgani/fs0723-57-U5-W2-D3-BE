@@ -2,6 +2,7 @@ package matteofurgani.u5w2d3.controllers;
 
 
 import matteofurgani.u5w2d3.entities.Blogpost;
+import matteofurgani.u5w2d3.payloads.BlogPostPayload;
 import matteofurgani.u5w2d3.services.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public class BlogsController {
     // 1. - POST http://localhost:3001/blogs (+ req.body)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // <-- 201
-    public Blogpost saveBlog(@RequestBody Blogpost body) {
+    public Blogpost saveBlog(@RequestBody BlogPostPayload body) {
 
         return this.blogsService.save(body);
     }

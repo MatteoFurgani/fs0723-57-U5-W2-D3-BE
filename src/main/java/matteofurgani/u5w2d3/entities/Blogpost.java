@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class Blogpost {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String category;
     private String title;
@@ -25,4 +25,8 @@ public class Blogpost {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
+
+
+    public Blogpost() {
+    }
 }
