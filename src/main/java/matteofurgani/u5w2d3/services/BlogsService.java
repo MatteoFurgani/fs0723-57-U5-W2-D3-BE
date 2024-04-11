@@ -6,6 +6,7 @@ import matteofurgani.u5w2d3.entities.Blogpost;
 import matteofurgani.u5w2d3.exceptions.BadRequestException;
 import matteofurgani.u5w2d3.exceptions.NotFoundException;
 import matteofurgani.u5w2d3.payloads.BlogPostPayload;
+import matteofurgani.u5w2d3.payloads.NewBlogPostDTO;
 import matteofurgani.u5w2d3.repositories.BlogPostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,14 +31,14 @@ public class BlogsService {
 
     //private final List<Blogpost> blogs = new ArrayList<>();
 
-    public Blogpost save(BlogPostPayload body) {
-        Author author = authorsService.findById(body.getAuthorId());
+    public Blogpost save(NewBlogPostDTO body) {
+        Author author = authorsService.findById(body.authorId());
         Blogpost newBlogPost = new Blogpost();
-        newBlogPost.setReadingTime((int) body.getReadingTime());
-        newBlogPost.setContent(body.getContent());
-        newBlogPost.setTitle(body.getTitle());
+        newBlogPost.setReadingTime((int) body.readingTime());
+        newBlogPost.setContent(body.content());
+        newBlogPost.setTitle(body.title());
         newBlogPost.setAuthor(author);
-        newBlogPost.setCategory(body.getCategory());
+        newBlogPost.setCategory(body.category());
         newBlogPost.setCover("http://picsum.photos/200/300");
         return blogDAO.save(newBlogPost);
     }

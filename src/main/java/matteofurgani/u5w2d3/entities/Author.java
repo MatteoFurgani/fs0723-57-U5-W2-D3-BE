@@ -7,7 +7,6 @@ import lombok.*;
 @Table(name = "authors")
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 public class Author {
     @Id
@@ -20,4 +19,15 @@ public class Author {
     private String avatar;
 
     public Author(){}
+
+    public Author(String name, String surname, String email, String dateOfBirth, String avatar) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.avatar = avatar;
+    }
+
+
+
 }
